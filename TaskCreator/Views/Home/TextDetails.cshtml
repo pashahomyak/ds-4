@@ -1,0 +1,16 @@
+﻿@model string;
+
+@{
+    ViewData["Title"] = "TextDetails";
+}
+
+<h1>TextDetails</h1>
+@if (ViewBag.Status == "Completed")
+{
+    <span>Статус обработки: @ViewBag.Status.</span>
+    <span>Результат оценивания текста: @ViewBag.ResultRank.</span>
+}
+else
+{
+<span>Статус обработки: @ViewBag.Status</span>
+}

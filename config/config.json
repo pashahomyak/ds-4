@@ -1,0 +1,8 @@
+{
+  "BackendApiPort": 5003,
+  "TaskCreatorPort": 5001,
+  "NatsPort": 4222,
+  "RedisPort": 6379,
+  "RedisRankPort": 6380,
+  "NatsBus": "events"
+}
