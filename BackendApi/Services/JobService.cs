@@ -15,13 +15,13 @@ namespace BackendApi.Services
     {
         private readonly ILogger<JobService> _logger;
         private IConfiguration _config;
-        private readonly ConnectionMultiplexer _redisRank;
+        private readonly ConnectionMultiplexer _redis;
 
         public JobService(ILogger<JobService> logger, IConfiguration config)
         {
             _logger = logger;
             _config = config;
-            _redisRank = ConnectionMultiplexer.Connect($"localhost:{config.GetValue<int>("RedisPort")}");
+            _redis = ConnectionMultiplexer.Connect($"{config.GetValue<string>("RedisHost")}:{config.GetValue<int>("RedisPort")}");
         }
 
         public override Task<RegisterResponse> Register(RegisterRequest request, ServerCallContext context)
@@ -46,7 +46,7 @@ namespace BackendApi.Services
 
             var responce = new GetProcessingResultResponse { Rank = resultRank, Status = status };
 
-            IDatabase db = _redisRank.GetDatabase();
+            IDatabase db = _redis.GetDatabase();
 
             for (int i = 0; i < 10; i++)
             {
@@ -66,8 +66,7 @@ namespace BackendApi.Services
 
         private void SaveToDb(string id, RegisterRequest request)
         {
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect($"localhost:{_config.GetValue<int>("RedisPort")}");
-            IDatabase db = redis.GetDatabase();
+            IDatabase db = _redis.GetDatabase();
             db.StringSet("description" + id, request.Description);
             db.StringSet(id, request.Data);
         }

@@ -18,7 +18,7 @@ namespace TextRankCalc
                 .AddJsonFile(jsonPath, optional: false)
                 .Build();
                 
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect($"localhost:{config.GetValue<int>("RedisPort")}");
+            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect($"{config.GetValue<string>("RedisHost")}:{config.GetValue<int>("RedisPort")}");
             IDatabase db = redis.GetDatabase();
             string description = db.StringGet(id);
 

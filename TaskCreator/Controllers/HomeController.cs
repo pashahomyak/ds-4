@@ -26,7 +26,6 @@ namespace TaskCreator.Controllers
         }
 
         [HttpPost]
-        //[HttpGet]
         public async Task<IActionResult> SubmitFormAsync(string taskDescription, string taskData)
         {
             string taskResult = String.Empty;
@@ -39,7 +38,6 @@ namespace TaskCreator.Controllers
                 var reply = await client.RegisterAsync(
                               new RegisterRequest { Description = taskDescription, Data = taskData });
                 taskResult = reply.Id;
-                //ViewBag.TaskResult = "Задача создана с идентификатором: " + taskResult;
             }
             catch (RpcException)
             {
@@ -50,8 +48,6 @@ namespace TaskCreator.Controllers
                 ViewBag.TaskResult = "Описание задачи не может быть пустым";
             }
 
-            //string url = Url.Page("TextDetails", new JobId { jobId = taskResult });
-            //return Redirect(url);
             return RedirectToAction("TextDetails", new { jobId = taskResult});
         }
 
